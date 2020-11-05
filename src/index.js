@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-// import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
-import Login from './pages/Login';
+import Game from './pages/Game';
 import * as serviceWorker from './serviceWorker';
-// import store from './store';
+import store from './store';
 
 ReactDOM.render(
-  // <Provider store={ store }>
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/" component={ App } />
-      <Route path="/login" component={ Login } />
-    </Switch>
-  </BrowserRouter>,
-  // </Provider>,
+  <Provider store={ store }>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={ App } />
+        <Route path="/game" component={ Game } />
+      </Switch>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root'),
 );
 

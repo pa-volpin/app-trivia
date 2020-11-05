@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { playerAction, createTokenAction } from '../actions';
+import { tokenAPI } from '../servicesAPI';
 
 class Login extends Component {
   constructor() {
@@ -7,12 +11,13 @@ class Login extends Component {
 
     this.state = {
       name: '',
-      email: '',
+      gravatarEmail: '',
       isDisabled: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.toggeButton = this.toggeButton.bind(this);
+    this.clickButton = this.clickButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -24,15 +29,23 @@ class Login extends Component {
   }
 
   toggeButton() {
-    const { email, name } = this.state;
+    const { gravatarEmail, name } = this.state;
 
-    const isDisabled = (email === '' || name === '');
+    const isDisabled = (gravatarEmail === '' || name === '');
     this.setState({ isDisabled });
   }
 
-  render() {
-    const { name, email, isDisabled } = this.state;
+  async clickButton() {
+    const { login, createToken } = this.props;
+    const { name, gravatarEmail } = this.state;
+    login({ name, gravatarEmail });
+    const tokenObj = await tokenAPI();
+    createToken(tokenObj);
+    localStorage.setItem('token', tokenObj.token);
+  }
 
+  render() {
+    const { name, gravatarEmail, isDisabled } = this.state;
     return (
       <>
         <input
@@ -46,23 +59,34 @@ class Login extends Component {
         <input
           type="email"
           onChange={ this.handleChange }
-          value={ email }
-          name="email"
+          value={ gravatarEmail }
+          name="gravatarEmail"
           placeholder="email"
           data-testid="input-gravatar-email"
         />
-        {/* <Link to="/play"> */}
-        <button
-          type="submit"
-          disabled={ isDisabled }
-          data-testid="btn-play"
-        >
-          Jogar
-        </button>
-        {/* </Link> */}
+        <Link to="/game">
+          <button
+            type="submit"
+            disabled={ isDisabled }
+            data-testid="btn-play"
+            onClick={ this.clickButton }
+          >
+            Jogar
+          </button>
+        </Link>
       </>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  login: (e) => dispatch(playerAction(e)),
+  createToken: (e) => dispatch(createTokenAction(e)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  createToken: PropTypes.func.isRequired,
+};
