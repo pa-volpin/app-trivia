@@ -30,7 +30,6 @@ class Login extends Component {
 
   toggeButton() {
     const { gravatarEmail, name } = this.state;
-
     const isDisabled = (gravatarEmail === '' || name === '');
     this.setState({ isDisabled });
   }
