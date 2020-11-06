@@ -1,0 +1,25 @@
+.header {
+  background-color: rgb(40,44,52);
+  box-shadow: inset 0px 0px 5px 0px white;
+  color: white;
+  display: flex;
+  padding: 1%;
+}
+
+.header img {
+  height: 50px;
+}
+
+.header .trivia-logo {
+  width: 20%;
+}
+
+.header .user-infos {
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+}
+
+.header .user-infos img {
+  border-radius: 100%;
+}
