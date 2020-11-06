@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import Game from './pages/Game';
+import Settings from './pages/Settings';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/" component={ App } />
         <Route path="/game" component={ Game } />
+        <Route path="/settings" component={ Settings } />
       </Switch>
     </BrowserRouter>
   </Provider>,
