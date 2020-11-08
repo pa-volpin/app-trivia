@@ -5,9 +5,11 @@ import Header from './Header';
 class Game extends Component {
   constructor() {
     super();
+    
     this.state = {
       questions: [],
     };
+
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -15,9 +17,9 @@ class Game extends Component {
 
   async componentDidMount() {
     // const token = localStorage.getItem('token');
-    const token = '02505344b54f45c8296f9388d11caebc0698d2c6fdfde9c1d9247c40e32dd0cd';
-    const five = 5;
-    const questions = await questionsAPI(five, token);
+    const token = 'a79ad379dd9c75416f0a481c6aa4708a60744482dac4aa2c6e39df1f95e23a53';
+    const questionsQuantity = 5;
+    const questions = await questionsAPI(questionsQuantity, token);
     this.saveQuestions(questions);
   }
 
@@ -52,17 +54,19 @@ class Game extends Component {
       const { type } = answer;
       const testId = (type === 'correct') ? 'correct-answer' : `wrong-answer-${ii}`;
       ii = (type === 'incorrect') ? ii + 1 : ii;
-      return (<p key={ index } data-testid={ testId }>{ answer.ans }</p>);
+    return (<p key={ index } data-testid={ testId }>{ answer.ans }</p>);
     });
   }
 
   handleQuestions(questions) {
     return questions.map((questionObj, index) => (
-      <div key={ index }>
+      <article key={ index }>
         <p data-testid="question-category">{ questionObj.category }</p>
         <p data-testid="question-text">{ questionObj.question }</p>
-        { this.handleAnswers(questionObj) }
-      </div>
+        <div>
+          { this.handleAnswers(questionObj) }
+        </div>
+      </article>
     ));
   }
 
@@ -71,7 +75,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        { questions.length > 0 ? this.handleQuestions(questions) : 'Sem Questões'}
+        { questions.length > 0 ? this.handleQuestions(questions)[0] : 'Sem Questões'}
       </div>
     );
   }
