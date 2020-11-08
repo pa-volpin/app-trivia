@@ -15,9 +15,9 @@ class Game extends Component {
 
   async componentDidMount() {
     // const token = localStorage.getItem('token');
-    const token = '02505344b54f45c8296f9388d11caebc0698d2c6fdfde9c1d9247c40e32dd0cd';
     const five = 5;
-    const questions = await questionsAPI(five, token);
+    const token = 'bc4070b55871ec620c0efe1f6c887e8b479e876079a400ed8145df1daa37311c';
+    const questions = (token !== '') ? await questionsAPI(five, token) : [];
     this.saveQuestions(questions);
   }
 
@@ -30,29 +30,22 @@ class Game extends Component {
       .map((incorrect) => ({ ans: incorrect, type: 'incorrect' }));
     const correctAnswer = { ans: questionObj.correct_answer, type: 'correct' };
     const allAnswers = [correctAnswer, ...incorrectAnswers];
-    // let allAnswersRandom = [];
-    // let max = allAnswers.length - 1;
-    // let min = 0;
-    // const randomIndex = (max, min) => Math.random()*(max - min) + min;
-    // let indexUsed = [];
+    const numberOfAnswers = allAnswers.length;
+    const allAnswersRandom = [];
+    for (let i = 0; i < numberOfAnswers; i += 1) {
+      const indexRandom = Math.round(Math.random() * (allAnswers.length - 1));
+      allAnswersRandom[i] = allAnswers[indexRandom];
+      allAnswers.splice(indexRandom, 1);
+    }
 
-    // allAnswers.forEach(answer => {
-    //   let indexNow = parseInt(randomIndex(max, min));
-    //   while(indexUsed.includes(indexNow)) {
-    //     indexNow = parseInt(randomIndex(max, min));
-    //   }
-    //   indexUsed.push(indexNow);
-    //   allAnswersRandom[min] = allAnswers[indexNow];
-    //   console.log(indexUsed)
-    //   min += 1;
-    // });
-
-    let ii = 0;
-    return allAnswers.map((answer, index) => {
-      const { type } = answer;
-      const testId = (type === 'correct') ? 'correct-answer' : `wrong-answer-${ii}`;
-      ii = (type === 'incorrect') ? ii + 1 : ii;
-      return (<p key={ index } data-testid={ testId }>{ answer.ans }</p>);
+    let indexOfIncorrectAnswers = 0;
+    return allAnswersRandom.map((answer, index) => {
+      const { ans, type } = answer;
+      const testId = (type === 'correct')
+        ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
+      indexOfIncorrectAnswers = (type === 'incorrect')
+        ? indexOfIncorrectAnswers + 1 : indexOfIncorrectAnswers;
+      return (<p key={ index } data-testid={ testId }>{ ans }</p>);
     });
   }
 
