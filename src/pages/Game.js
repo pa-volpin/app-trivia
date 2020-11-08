@@ -42,7 +42,9 @@ class Game extends Component {
     return allAnswersRandom.map((answer, index) => {
       const { ans, type } = answer;
       const testId = (type === 'correct') ? 'correct-answer' : `wrong-answer-${ii}`;
-      ii = (type === 'incorrect') ? ii + 1 : ii;
+      indexOfIncorrectAnswers = (type === 'incorrect')
+        ? indexOfIncorrectAnswers + 1
+        : indexOfIncorrectAnswers;
       return (<p key={ index } data-testid={ testId }>{ ans }</p>);
     });
   }
