@@ -5,7 +5,7 @@ import Header from './Header';
 class Game extends Component {
   constructor() {
     super();
-    
+
     this.state = {
       questions: [],
     };
@@ -54,7 +54,8 @@ class Game extends Component {
       const { type } = answer;
       const testId = (type === 'correct') ? 'correct-answer' : `wrong-answer-${ii}`;
       ii = (type === 'incorrect') ? ii + 1 : ii;
-    return (<p key={ index } data-testid={ testId }>{ answer.ans }</p>);
+
+      return (<p key={ index } data-testid={ testId }>{ answer.ans }</p>);
     });
   }
 
