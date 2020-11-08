@@ -5,9 +5,11 @@ import Header from './Header';
 class Game extends Component {
   constructor() {
     super();
+
     this.state = {
       questions: [],
     };
+
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -15,9 +17,9 @@ class Game extends Component {
 
   async componentDidMount() {
     // const token = localStorage.getItem('token');
-    const five = 5;
+    const questionsQuantity = 5;
     const token = 'bc4070b55871ec620c0efe1f6c887e8b479e876079a400ed8145df1daa37311c';
-    const questions = (token !== '') ? await questionsAPI(five, token) : [];
+    const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
   }
 
@@ -51,11 +53,13 @@ class Game extends Component {
 
   handleQuestions(questions) {
     return questions.map((questionObj, index) => (
-      <div key={ index }>
+      <article key={ index }>
         <p data-testid="question-category">{ questionObj.category }</p>
         <p data-testid="question-text">{ questionObj.question }</p>
-        { this.handleAnswers(questionObj) }
-      </div>
+        <div>
+          { this.handleAnswers(questionObj) }
+        </div>
+      </article>
     ));
   }
 
@@ -64,7 +68,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        { questions.length > 0 ? this.handleQuestions(questions) : 'Sem Questões'}
+        { questions.length > 0 ? this.handleQuestions(questions)[0] : 'Sem Questões'}
       </div>
     );
   }
