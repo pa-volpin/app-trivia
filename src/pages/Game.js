@@ -14,8 +14,9 @@ class Game extends Component {
   }
 
   async componentDidMount() {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
     const five = 5;
+    const token = 'bc4070b55871ec620c0efe1f6c887e8b479e876079a400ed8145df1daa37311c';
     const questions = (token !== '') ? await questionsAPI(five, token) : [];
     this.saveQuestions(questions);
   }
@@ -37,10 +38,11 @@ class Game extends Component {
       allAnswers.splice(indexRandom, 1);
     }
 
-    let indexOfIncorrectAnswers;
+    let indexOfIncorrectAnswers = 0;
     return allAnswersRandom.map((answer, index) => {
       const { ans, type } = answer;
-      const testId = (type === 'correct') ? 'correct-answer' : `wrong-answer-${ii}`;
+      const testId = (type === 'correct')
+        ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
       indexOfIncorrectAnswers = (type === 'incorrect')
         ? indexOfIncorrectAnswers + 1 : indexOfIncorrectAnswers;
       return (<p key={ index } data-testid={ testId }>{ ans }</p>);
