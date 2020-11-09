@@ -33,7 +33,6 @@ class Game extends Component {
 
       if (attributes.includes('correct-answer')) {
         answer.classList.add('correct-answer');
-        console.log('lol', answer.classList);
       } else {
         answer.classList.add('incorrect-answer');
       }
