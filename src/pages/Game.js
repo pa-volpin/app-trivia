@@ -19,29 +19,16 @@ class Game extends Component {
     this.handleAnswers = this.handleAnswers.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
     this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.count = this.count.bind(this);
   }
 
   async componentDidMount() {
     // const token = localStorage.getItem('token');
     const questionsQuantity = 5;
-    const token = '04fc0115ffe9fd9c561471c56e1281437e707a1bd76d9c87c4a22927cec42adc';
+    const token = 'ecc813bb4f3c70b8634ac52c287f5f4800272bce0e92bc4ad7509f6c77838fc9';
     const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
-  }
-
-  handleColor() {
-    const otherAnswers = document.querySelectorAll('article > div > button');
-
-    otherAnswers.forEach((answer) => {
-      const attributes = answer.attributes[0].value;
-
-      if (attributes.includes('correct-answer')) {
-        answer.classList.add('correct-answer');
-      } else {
-        answer.classList.add('incorrect-answer');
-      }
-    });
   }
 
   saveQuestions(questions) {
@@ -85,8 +72,16 @@ class Game extends Component {
   }
 
   handleQuestions(questions) {
+    const buttonNext = (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleNext }
+      >
+        Próxima
+      </button>);
     const interval = 30000;
-    const { repeatCount } = this.state;
+    const { repeatCount, selectedAnswer } = this.state;
     if (repeatCount) this.count(interval);
     return questions.map((questionObj, index) => (
       <article key={ index }>
@@ -95,6 +90,7 @@ class Game extends Component {
         <div>
           { this.handleAnswers(questionObj) }
         </div>
+        { (selectedAnswer !== '') ? buttonNext : '' }
       </article>
     ));
   }
@@ -122,6 +118,14 @@ class Game extends Component {
       assertions: actualState.assertions + point,
       repeatCount: false,
       answersDisabled: true,
+    }));
+  }
+
+  handleNext() {
+    this.setState((actualState) => ({
+      actualQuestion: actualState.actualQuestion + 1,
+      selectedAnswer: '',
+      answersDisabled: false,
     }));
   }
 
