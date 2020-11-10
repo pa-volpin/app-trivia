@@ -125,7 +125,6 @@ class Game extends Component {
       answersDisabled: true,
     }));
   }
-  
   handleNext() {
     this.setState((actualState) => ({
       actualQuestion: actualState.actualQuestion + 1,
