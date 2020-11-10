@@ -25,7 +25,7 @@ class Game extends Component {
   async componentDidMount() {
     // const token = localStorage.getItem('token');
     const questionsQuantity = 5;
-    const token = '04fc0115ffe9fd9c561471c56e1281437e707a1bd76d9c87c4a22927cec42adc';
+    const token = 'ecc813bb4f3c70b8634ac52c287f5f4800272bce0e92bc4ad7509f6c77838fc9';
     const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
   }
