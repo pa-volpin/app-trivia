@@ -86,7 +86,7 @@ class Game extends Component {
 
   handleQuestions(questions) {
     const interval = 30000;
-    const { repeatCount } = this.state;
+    const { repeatCount, selectedAnswer } = this.state;
     if (repeatCount) this.count(interval);
     return questions.map((questionObj, index) => (
       <article key={ index }>
