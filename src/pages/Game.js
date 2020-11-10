@@ -102,6 +102,7 @@ class Game extends Component {
   count(interval) {
     const thousand = 1000;
     let timer = interval / thousand;
+    let id = '';
     const frame = () => {
       if (timer === 0) {
         this.handleUniqueAnswer('incorrect');
@@ -111,7 +112,7 @@ class Game extends Component {
         timer -= 1;
       }
     };
-    const id = setInterval(frame, thousand);
+    id = setInterval(frame, thousand);
   }
 
   handleUniqueAnswer(type) {
