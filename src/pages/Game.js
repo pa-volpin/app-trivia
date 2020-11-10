@@ -95,6 +95,7 @@ class Game extends Component {
         <div>
           { this.handleAnswers(questionObj) }
         </div>
+        { (selectedAnswer !== '') ? buttonNext : '' }
       </article>
     ));
   }
