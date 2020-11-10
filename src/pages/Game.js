@@ -126,7 +126,7 @@ class Game extends Component {
     }));
   }
   
-  handleNext() {	
+  handleNext() {
     this.setState((actualState) => ({
       actualQuestion: actualState.actualQuestion + 1,
       selectedAnswer: '',
