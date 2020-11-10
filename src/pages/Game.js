@@ -19,6 +19,7 @@ class Game extends Component {
     this.handleAnswers = this.handleAnswers.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
     this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.count = this.count.bind(this);
   }
 
