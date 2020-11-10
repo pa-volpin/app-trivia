@@ -131,7 +131,7 @@ class Game extends Component {
       actualQuestion: actualState.actualQuestion + 1,	
       selectedAnswer: '',	
       answersDisabled: false,	
-    }));	
+    }));
   }
 
   render() {
