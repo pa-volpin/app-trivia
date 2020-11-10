@@ -86,6 +86,14 @@ class Game extends Component {
   }
 
   handleQuestions(questions) {
+    const buttonNext = (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleNext }
+      >
+        Próxima
+      </button>);
     const interval = 30000;
     const { repeatCount, selectedAnswer } = this.state;
     if (repeatCount) this.count(interval);
