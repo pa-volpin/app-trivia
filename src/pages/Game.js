@@ -31,6 +31,20 @@ class Game extends Component {
     this.saveQuestions(questions);
   }
 
+  handleColor() {
+    const otherAnswers = document.querySelectorAll('article > div > button');
+
+    otherAnswers.forEach((answer) => {
+      const attributes = answer.attributes[0].value;
+
+      if (attributes.includes('correct-answer')) {
+        answer.classList.add('correct-answer');
+      } else {
+        answer.classList.add('incorrect-answer');
+      }
+    });
+  }
+
   saveQuestions(questions) {
     this.setState({ questions });
   }
