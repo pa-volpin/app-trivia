@@ -125,6 +125,14 @@ class Game extends Component {
       answersDisabled: true,
     }));
   }
+  
+  handleNext() {	
+    this.setState((actualState) => ({	
+      actualQuestion: actualState.actualQuestion + 1,	
+      selectedAnswer: '',	
+      answersDisabled: false,	
+    }));	
+  }
 
   render() {
     const { questions, actualQuestion } = this.state;
