@@ -128,7 +128,7 @@ class Game extends Component {
   
   handleNext() {	
     this.setState((actualState) => ({	
-      actualQuestion: actualState.actualQuestion + 1,	
+      actualQuestion: actualState.actualQuestion + 1,
       selectedAnswer: '',
       answersDisabled: false,	
     }));
