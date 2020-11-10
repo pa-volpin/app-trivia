@@ -26,8 +26,23 @@ class Game extends Component {
     // const token = localStorage.getItem('token');
     const questionsQuantity = 5;
     const token = '04fc0115ffe9fd9c561471c56e1281437e707a1bd76d9c87c4a22927cec42adc';
+    const token = '2328682ae1d303064ff1d5d16b2490a22310553c91f9ebbcd1a9422d1b1e6cc9';
     const questions = (token !== '') ? await questionsAPI(questionsQuantity, token) : [];
     this.saveQuestions(questions);
+  }
+
+  handleColor() {
+    const otherAnswers = document.querySelectorAll('article > div > button');
+
+    otherAnswers.forEach((answer) => {
+      const attributes = answer.attributes[0].value;
+
+      if (attributes.includes('correct-answer')) {
+        answer.classList.add('correct-answer');
+      } else {
+        answer.classList.add('incorrect-answer');
+      }
+    });
   }
 
   saveQuestions(questions) {
