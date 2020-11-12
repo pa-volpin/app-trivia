@@ -1,5 +1,5 @@
 import playerAction from './playerAction';
-import createTokenAction from './tokenAction';
+import fetchTokenAction from './tokenAction';
 import questionsAction from './questionsAction';
 
-export { playerAction, createTokenAction, questionsAction };
+export { playerAction, questionsAction, fetchTokenAction };

@@ -1,6 +1,6 @@
 import { ADD_TOKEN } from '../actions/tokenAction';
 
-const INITIAL_STATE = { tokenObj: { token: '', date: '' } };
+const INITIAL_STATE = { token: '', date: '' };
 
 const tokenReducer = (state = INITIAL_STATE, action) => {
   const { type, tokenObj } = action;

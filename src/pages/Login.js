@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { playerAction, createTokenAction } from '../actions';
-import { tokenAPI } from '../servicesAPI';
+import { playerAction, fetchTokenAction } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -22,7 +21,6 @@ class Login extends Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-
     this.setState({ [name]: value }, () => {
       this.toggeButton();
     });
@@ -34,13 +32,11 @@ class Login extends Component {
     this.setState({ isDisabled });
   }
 
-  async clickButton() {
+  clickButton() {
     const { login, createToken } = this.props;
     const { name, gravatarEmail } = this.state;
     login({ name, gravatarEmail });
-    const tokenObj = await tokenAPI();
-    createToken(tokenObj);
-    localStorage.setItem('token', tokenObj.token);
+    createToken();
   }
 
   render() {
@@ -88,7 +84,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (e) => dispatch(playerAction(e)),
-  createToken: (e) => dispatch(createTokenAction(e)),
+  createToken: () => dispatch(fetchTokenAction()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
