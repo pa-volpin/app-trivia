@@ -1,8 +1,21 @@
-const time = 3000;
+// ======================================================================================
 const tokenURL = 'https://opentdb.com/api_token.php?command=request';
-const tokenAPIMock = () => setInterval(() => ({ token: tokenURL, date: new Date() }),
-  time);
+// const tokenURL = '';
 
+const tokenAPIMock = () => new Promise((resolve, reject) => {
+  function makeToken() {
+    localStorage.setItem('token', tokenURL);
+    return ({ token: tokenURL, date: new Date() });
+  }
+  function errorToken() {
+    localStorage.setItem('token', 'ERROR_TOKEN');
+    return ({ token: 'ERROR_TOKEN', date: 'ERROR_TOKEN' });
+  }
+  if (tokenURL !== '') return resolve(makeToken());
+  return reject(errorToken());
+});
+
+// ======================================================================================
 const questionsResponse = [
   {
     question: 'Primeira questão',
@@ -17,10 +30,17 @@ const questionsResponse = [
     incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
   },
 ];
+// const questionsResponse = [];
 
-const questionsAPIMock = () => {
-  setTimeout(console.log('Questions From Mock API'), time);
-  return questionsResponse;
-};
+const questionsAPIMock = () => new Promise((resolve, reject) => {
+  function getQuestions() {
+    return questionsResponse;
+  }
+  function errorQuestions() {
+    return 'ERROR_QUESTIONS';
+  }
+  return (questionsResponse.length > 0)
+    ? resolve(getQuestions()) : reject(errorQuestions());
+});
 
 export { tokenAPIMock, questionsAPIMock };
