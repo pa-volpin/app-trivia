@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { questionsAPI } from '../servicesAPI';
@@ -8,28 +9,37 @@ class Questions extends Component {
     super();
     this.state = {
       questions: [],
-      actualQuestion: 0,
+      actualQuestionIndex: 0,
       selectedAnswer: '',
       assertions: 0,
       answersDisabled: false,
       repeatCount: true,
+      stopCount: false,
     };
     this.handleQuestion = this.handleQuestion.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.handleUniqueAnswer = this.handleUniqueAnswer.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.count = this.count.bind(this);
+    this.prepareQuestions = this.prepareQuestions.bind(this);
+    this.sortRandomAnswers = this.sortRandomAnswers.bind(this);
   }
 
   componentDidMount() {
     const { tokenObj: { token } } = this.props;
     const questionsQuantity = 5;
     questionsAPI(questionsQuantity, token)
-      .then((r) => this.setState({ questions: r }))
+      .then((r) => this.prepareQuestions(r))
       .catch((r) => this.setState({ questions: r }));
   }
 
-  handleAnswers(questionObj) {
+  prepareQuestions(questions) {
+    const questionsPrepared = questions
+      .map((question) => this.sortRandomAnswers(question));
+    this.setState({ questions: questionsPrepared });
+  }
+
+  sortRandomAnswers(questionObj) {
     const incorrectAnswers = questionObj.incorrect_answers
       .map((incorrect) => ({ ans: incorrect, type: 'incorrect' }));
     const correctAnswer = { ans: questionObj.correct_answer, type: 'correct' };
@@ -41,9 +51,39 @@ class Questions extends Component {
       allAnswersRandom[i] = allAnswers[indexRandom];
       allAnswers.splice(indexRandom, 1);
     }
+    questionObj.randomAnswers = allAnswersRandom;
+    return questionObj;
+  }
 
+  handleQuestion(index) {
+    const { questions, repeatCount, selectedAnswer } = this.state;
+    const actualQuestion = questions[index];
+    const buttonNext = (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleNext }
+      >
+        Próxima
+      </button>);
+    const interval = 30000;
+    if (repeatCount) this.count(interval);
+    return (
+      <article>
+        <p data-testid="question-category">{ actualQuestion.category }</p>
+        <p data-testid="question-text">{ actualQuestion.question }</p>
+        <div>
+          { this.handleAnswers(actualQuestion) }
+        </div>
+        { (selectedAnswer !== '') ? buttonNext : '' }
+      </article>
+    );
+  }
+
+  handleAnswers(question) {
+    const { randomAnswers } = question;
     let indexOfIncorrectAnswers = 0;
-    return allAnswersRandom.map((answer, index) => {
+    return randomAnswers.map((answer, index) => {
       const { ans, type } = answer;
       const testId = (type === 'correct')
         ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
@@ -65,38 +105,18 @@ class Questions extends Component {
     });
   }
 
-  handleQuestion(questionObj) {
-    const buttonNext = (
-      <button
-        data-testid="btn-next"
-        type="button"
-        onClick={ this.handleNext }
-      >
-        Próxima
-      </button>);
-    const interval = 30000;
-    const { repeatCount, selectedAnswer } = this.state;
-    if (repeatCount) this.count(interval);
-    return (
-      <article>
-        <p data-testid="question-category">{ questionObj.category }</p>
-        <p data-testid="question-text">{ questionObj.question }</p>
-        <div>
-          { this.handleAnswers(questionObj) }
-        </div>
-        { (selectedAnswer !== '') ? buttonNext : '' }
-      </article>
-    );
-  }
-
   count(interval) {
     const thousand = 1000;
     let timer = interval / thousand;
     let id = '';
     const frame = () => {
+      const { stopCount } = this.state;
       if (timer === 0) {
         this.handleUniqueAnswer('incorrect');
         clearInterval(id);
+      } else if (stopCount) {
+        clearInterval(id);
+        this.setState({ stopCount: false });
       } else {
         document.getElementById('timer').innerHTML = timer;
         timer -= 1;
@@ -111,27 +131,36 @@ class Questions extends Component {
       selectedAnswer: type,
       assertions: actualState.assertions + point,
       repeatCount: false,
+      stopCount: true,
       answersDisabled: true,
     }));
   }
 
   handleNext() {
     this.setState((actualState) => ({
-      actualQuestion: actualState.actualQuestion + 1,
+      actualQuestionIndex: actualState.actualQuestionIndex + 1,
       selectedAnswer: '',
       answersDisabled: false,
+      repeatCount: true,
+      stopCount: false,
     }));
   }
 
   render() {
-    const { questions, actualQuestion } = this.state;
+    const { questions, actualQuestionIndex } = this.state;
+    const magicNumberFive = 5;
+    const aboutQuestions = () => {
+      const loadingOrQuestion = (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
+        ? this.handleQuestion(actualQuestionIndex) : (<h1>Carregando...</h1>);
+      return loadingOrQuestion;
+    };
     return (
       <div>
         <p id="timer" />
-        { (questions === 'ERROR_QUESTIONS') ? 'Sem Questões' : '' }
-
-        { (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
-          ? this.handleQuestion(questions[actualQuestion]) : <h1>Carregando...</h1> }
+        { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < magicNumberFive)
+          ? 'ERROR' : '' }
+        { (actualQuestionIndex < magicNumberFive)
+          ? aboutQuestions() : <Redirect to="/feedback" /> }
       </div>
     );
   }
