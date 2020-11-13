@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import Game from './pages/Game';
 import Settings from './pages/Settings';
+import Feedback from './pages/Feedback';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
@@ -16,6 +17,7 @@ ReactDOM.render(
         <Route exact path="/" component={ App } />
         <Route path="/game" component={ Game } />
         <Route path="/settings" component={ Settings } />
+        <Route path="/feedback" component={ Feedback } />
       </Switch>
     </BrowserRouter>
   </Provider>,
