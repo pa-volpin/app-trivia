@@ -62,7 +62,6 @@ class Questions extends Component {
       <button
         data-testid="btn-next"
         type="button"
-        // onClick={ (actualQuestionIndex < 5) ? this.handleNext : window.location.assign('/feedback') }
         onClick={ this.handleNext }
       >
         Próxima
@@ -150,15 +149,18 @@ class Questions extends Component {
   render() {
     const { questions, actualQuestionIndex } = this.state;
     const magicNumberFive = 5;
+    const aboutQuestions = () => {
+      const loadingOrQuestion = (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
+        ? this.handleQuestion(actualQuestionIndex) : (<h1>Carregando...</h1>);
+      return loadingOrQuestion;
+    };
     return (
       <div>
         <p id="timer" />
-        { (questions === 'ERROR_QUESTIONS') ? 'Sem Questões' : '' }
+        { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < magicNumberFive)
+          ? 'ERROR' : '' }
         { (actualQuestionIndex < magicNumberFive)
-          ? (
-            (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
-              ? this.handleQuestion(actualQuestionIndex) : <h1>Carregando...</h1>
-          ) : <Redirect to="/feedback" /> }
+          ? aboutQuestions() : <Redirect to="/feedback" /> }
       </div>
     );
   }
