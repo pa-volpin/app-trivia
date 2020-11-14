@@ -46,6 +46,8 @@ class Feedback extends Component {
               : 'Podia ser melhor...'
           }
         </p>
+        <p data-testid="feedback-total-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
       </header>
     );
   }
