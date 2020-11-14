@@ -11,21 +11,23 @@ class Feedback extends Component {
       score: -1,
     };
 
-    this.getScoreFromStorage = this.getScoreFromStorage.bind(this);
+    this.getPlayerDataFromStorage = this.getPlayerDataFromStorage.bind(this);
   }
 
   componentDidMount() {
-    this.getScoreFromStorage();
+    this.getPlayerDataFromStorage();
   }
 
-  getScoreFromStorage() {
-    const { score } = JSON.parse(localStorage.getItem('state')).player;
-    this.setState({ score });
+  getPlayerDataFromStorage() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { score, assertions } = player;
+    this.setState({ score, assertions });
   }
 
   render() {
     const { name, gravatarEmail } = this.props;
-    const { score } = this.state;
+    const { score, assertions } = this.state;
+    const threeCorrectAnswers = 3;
 
     return (
       <header>
@@ -37,6 +39,13 @@ class Feedback extends Component {
           src={ gravatarAPI(gravatarEmail) }
         />
         <p data-testid="header-score">{ score }</p>
+        <p data-testid="feedback-text">
+          {
+            assertions >= threeCorrectAnswers
+              ? 'Mandou bem!'
+              : 'Podia ser melhor...'
+          }
+        </p>
       </header>
     );
   }
