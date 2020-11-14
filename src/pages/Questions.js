@@ -110,7 +110,7 @@ class Questions extends Component {
 
   count(interval) {
     const thousand = 1000;
-    let timer = interval / thousand;
+    let timer = (interval / thousand) || 0;
     let id = '';
     const frame = () => {
       const { stopCount } = this.state;
