@@ -12,6 +12,7 @@ class Questions extends Component {
       actualQuestionIndex: 0,
       selectedAnswer: '',
       assertions: 0,
+      score: 0,
       answersDisabled: false,
       repeatCount: true,
       stopCount: false,
@@ -28,6 +29,9 @@ class Questions extends Component {
   componentDidMount() {
     const { tokenObj: { token } } = this.props;
     const questionsQuantity = 5;
+    const { name, gravatarEmail } = this.props;
+    const gameState = { player: { name, assertions: 0, score: 0, gravatarEmail } };
+    localStorage.setItem('state', JSON.stringify(gameState));
     questionsAPI(questionsQuantity, token)
       .then((r) => this.prepareQuestions(r))
       .catch((r) => this.setState({ questions: r }));
@@ -125,15 +129,46 @@ class Questions extends Component {
     id = setInterval(frame, thousand);
   }
 
+  handleScore() {
+    const { questions, actualQuestionIndex } = this.state;
+    const timer = document.getElementById('timer').innerHTML;
+    const difficulty = questions[actualQuestionIndex].difficulty;
+    const level = { easy: 1, medium: 2, hard: 3 };
+    const difficultyMultiplier = level[difficulty];
+    const score = 10 + (timer * difficultyMultiplier);
+    console.log('SELETOR DO TIMER', document.getElementById('timer').innerHTML);
+    console.log('TIMER', timer);
+    console.log('DIFFICULTY', difficultyMultiplier);
+    console.log('SCORE NA FUNÇÂO', score);
+    return score;
+  }
+
   handleUniqueAnswer(type) {
-    const point = (type === 'correct') ? 1 : 0;
+    const score = (type === 'correct') ? this.handleScore() : 0;
+    const assertion = (type === 'correct') ? 1 : 0;
+     //     const { assertions, score } = this.state;
+        const { name, gravatarEmail } = this.props;
+        const storageScore = JSON.parse(localStorage.getItem('state')).player.score;
+        const storageAssertions = JSON.parse(localStorage.getItem('state')).player.assertions;
+
+        const gameState = { player: { name, assertions: storageAssertions + assertion, score: storageScore + score, gravatarEmail } };
+        localStorage.setItem('state', JSON.stringify(gameState));
     this.setState((actualState) => ({
       selectedAnswer: type,
-      assertions: actualState.assertions + point,
+      score: actualState.score + score,
+      assertions: actualState.assertions + assertion,
       repeatCount: false,
       stopCount: true,
       answersDisabled: true,
     }));
+    
+    // () => {
+    //     const { assertions, score } = this.state;
+    //     const { name, gravatarEmail } = this.props;
+    //     const gameState = { player: { name, assertions, score, gravatarEmail } };
+    //     localStorage.setItem('state', JSON.stringify(gameState));
+    //   }
+    // );
   }
 
   handleNext() {
@@ -145,7 +180,7 @@ class Questions extends Component {
       stopCount: false,
     }));
   }
-
+  
   render() {
     const { questions, actualQuestionIndex } = this.state;
     const magicNumberFive = 5;
@@ -156,7 +191,7 @@ class Questions extends Component {
     };
     return (
       <div>
-        <p id="timer" />
+        { (actualQuestionIndex < 5) ? <p id="timer" /> : '' }
         { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < magicNumberFive)
           ? 'ERROR' : '' }
         { (actualQuestionIndex < magicNumberFive)
