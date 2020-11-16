@@ -6,7 +6,6 @@ import { questionsAPIMock } from '../servicesAPIMock';
 import { addStopAction, addTimerAction } from '../actions';
 import Timer from './Timer';
 
-
 class Questions extends Component {
   constructor() {
     super();
@@ -61,7 +60,7 @@ class Questions extends Component {
   }
 
   handleQuestion(index) {
-    const { questions, repeatCount, selectedAnswer } = this.state;
+    const { questions, selectedAnswer } = this.state;
     const actualQuestion = questions[index];
     const buttonNext = (
       <button
@@ -92,7 +91,7 @@ class Questions extends Component {
         ? 'correct-answer' : `wrong-answer-${indexOfIncorrectAnswers}`;
       indexOfIncorrectAnswers = (type === 'incorrect')
         ? indexOfIncorrectAnswers + 1 : indexOfIncorrectAnswers;
-      const { answersDisabled, selectedAnswer } = this.state;
+      const { selectedAnswer } = this.state;
       const { seconds } = this.props;
       return (
         <button
@@ -111,10 +110,11 @@ class Questions extends Component {
 
   handleScore(timer) {
     const { questions, actualQuestionIndex } = this.state;
-    const difficulty = questions[actualQuestionIndex].difficulty;
+    const { difficulty } = questions[actualQuestionIndex];
     const level = { easy: 1, medium: 2, hard: 3 };
     const difficultyMultiplier = level[difficulty];
-    const score = 10 + (timer * difficultyMultiplier);
+    const magicNumberTen = 10;
+    const score = magicNumberTen + (timer * difficultyMultiplier);
     return score;
   }
 
@@ -124,20 +124,24 @@ class Questions extends Component {
     const assertion = (type === 'correct') ? 1 : 0;
     const { score, assertions } = this.state;
     const { name, gravatarEmail } = this.props;
-    const gameState = { player: { name, assertions: assertions+assertion, score: score + scoreAdd, gravatarEmail  } };
+    const gameState = { player: {
+      name,
+      assertions: assertions + assertion,
+      score: score + scoreAdd,
+      gravatarEmail,
+    } };
     localStorage.setItem('state', JSON.stringify(gameState));
     addStop(true);
-    this.setState((actualState) => ({ selectedAnswer: type }));
+    this.setState({ selectedAnswer: type });
   }
 
   handleNext() {
     this.setState((actualState) => ({
       actualQuestionIndex: actualState.actualQuestionIndex + 1,
       selectedAnswer: '',
-      answersDisabled: false,
     }));
   }
-  
+
   render() {
     const { questions, actualQuestionIndex } = this.state;
     const magicNumberFive = 5;
@@ -148,11 +152,11 @@ class Questions extends Component {
     };
     return (
       <div>
+        <Timer />
         { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < magicNumberFive)
           ? 'ERROR' : '' }
         { (actualQuestionIndex < magicNumberFive)
           ? aboutQuestions() : <Redirect to="/feedback" /> }
-        <Timer />
       </div>
     );
   }
@@ -172,4 +176,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   tokenObj: PropTypes.objectOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  seconds: PropTypes.number.isRequired,
+  addStop: PropTypes.string.isRequired,
 };

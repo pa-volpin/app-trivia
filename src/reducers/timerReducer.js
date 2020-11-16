@@ -8,7 +8,7 @@ const timerReducer = (state = INITIAL_STATE, action) => {
   case ADD_TIMER:
     return { ...state, seconds };
   case ADD_STOP:
-      return { ...state, stop };
+    return { ...state, stop };
   default:
     return state;
   }

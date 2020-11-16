@@ -15,13 +15,21 @@ class Header extends Component {
             <img src={ logo } alt="trivia logo" />
           </div>
           <div className="user-infos">
-            <p data-testid="header-player-name">{ name }</p>
             <img
               alt="user avatar"
               data-testid="header-profile-picture"
               src={ gravatarAPI(gravatarEmail) }
             />
-            <p data-testid="header-score">{ score }</p>
+            <div>
+              <p data-testid="header-player-name">{ name }</p>
+              <h2
+                className="score"
+                data-testid="header-score"
+              >
+                Score:
+                { score }
+              </h2>
+            </div>
           </div>
         </header>
       </div>
