@@ -5,43 +5,50 @@ import { addTimerAction } from '../actions';
 import './Timer.css';
 
 class Timer extends Component {
-  constructor() {
-    super();
-    this.state = { seconds: 30 };
+  constructor(props) {
+    super(props);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
-    const magicThousand = 1000;
-    this.interval = setInterval(() => {
-      const { seconds } = this.state;
-      const { stop } = this.props;
-      if (seconds > 0 && !stop) {
-        this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
-      } else {
-        clearInterval(this.interval);
-      }
-    }, magicThousand);
+    this.timer();
+  }
+
+  componentDidUpdate() {
+    const { stop, seconds } = this.props;
+    if (stop || seconds === 0) this.timer();
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
+  timer() {
+    const magicThousand = 1000;
+    this.interval = setInterval(() => {
+      const { stop, seconds } = this.props;
+      if (seconds > 0 && !stop) {
+        const { addTimer } = this.props;
+        addTimer(seconds - 1);
+      } else {
+        clearInterval(this.interval);
+      }
+    }, magicThousand);
+  }
+
   render() {
-    const { seconds } = this.state;
-    const { addTimer } = this.props;
+    const { seconds } = this.props;
     const magicThirty = 30;
-    addTimer(seconds);
     return (
       <div
         className="timer"
       >
         <h2
           style={ { background:
-            `linear-gradient(90deg, teal ${seconds / (magicThirty * 100)}%,
-              white ${seconds / (magicThirty * 100)}%,
-              white ${100 - seconds * (100 / magicThirty)}%,
-              white ${100 - seconds * (100 / magicThirty)}%)` } }
+            `linear-gradient(90deg, teal ${(seconds / magicThirty) * 100}%,
+              white ${(seconds / magicThirty) * 100}%,
+              white ${100 - (seconds * 100) / magicThirty}%,
+              white ${100 - (seconds * 100) / magicThirty}%)` } }
         >
           { `Tempo restante: ${seconds}` }
         </h2>
@@ -56,6 +63,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   stop: state.timer.stop,
+  seconds: state.timer.seconds,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);
@@ -63,4 +71,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(Timer);
 Timer.propTypes = {
   addTimer: PropTypes.string.isRequired,
   stop: PropTypes.bool.isRequired,
+  seconds: PropTypes.number.isRequired,
 };

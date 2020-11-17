@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { playerAction, fetchTokenAction } from '../actions';
+import { playerLoginAction, fetchTokenAction } from '../actions';
 import './Login.css';
 
 class Login extends Component {
@@ -88,7 +88,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (e) => dispatch(playerAction(e)),
+  login: (e) => dispatch(playerLoginAction(e)),
   createToken: () => dispatch(fetchTokenAction()),
 });
 

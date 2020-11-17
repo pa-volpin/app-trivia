@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { questionsAPIMock } from '../servicesAPIMock';
-import { addStopAction, addTimerAction } from '../actions';
+import { questionsAPI } from '../servicesAPI';
+import { addStopAction, addTimerAction, playerAddScoreAction } from '../actions';
 import Timer from './Timer';
 
 class Questions extends Component {
@@ -13,8 +13,6 @@ class Questions extends Component {
       questions: [],
       actualQuestionIndex: 0,
       selectedAnswer: '',
-      assertions: 0,
-      score: 0,
     };
     this.handleQuestion = this.handleQuestion.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -25,14 +23,13 @@ class Questions extends Component {
   }
 
   componentDidMount() {
-    const { tokenObj: { token } } = this.props;
+    const { tokenObj: { token }, name, gravatarEmail } = this.props;
     const questionsQuantity = 5;
-    const { name, gravatarEmail } = this.props;
     const gameState = { player: { name, assertions: 0, score: 0, gravatarEmail } };
     localStorage.setItem('state', JSON.stringify(gameState));
     const { seconds } = this.props;
     if (seconds === 0) this.handleUniqueAnswer('incorrect');
-    questionsAPIMock(questionsQuantity, token)
+    questionsAPI(questionsQuantity, token)
       .then((r) => this.prepareQuestions(r))
       .catch((r) => this.setState({ questions: r }));
   }
@@ -61,6 +58,7 @@ class Questions extends Component {
 
   handleQuestion(index) {
     const { questions, selectedAnswer } = this.state;
+    const { seconds } = this.props;
     const actualQuestion = questions[index];
     const buttonNext = (
       <button
@@ -77,7 +75,7 @@ class Questions extends Component {
         <div>
           { this.handleAnswers(actualQuestion) }
         </div>
-        { (selectedAnswer !== '') ? buttonNext : '' }
+        { (selectedAnswer !== '' || seconds === 0) ? buttonNext : '' }
       </article>
     );
   }
@@ -119,23 +117,27 @@ class Questions extends Component {
   }
 
   handleUniqueAnswer(type) {
-    const { seconds, addStop } = this.props;
+    const { seconds, addStop, addScore, name, gravatarEmail,
+      score, assertions } = this.props;
     const scoreAdd = (type === 'correct') ? this.handleScore(seconds) : 0;
     const assertion = (type === 'correct') ? 1 : 0;
-    const { score, assertions } = this.state;
-    const { name, gravatarEmail } = this.props;
-    const gameState = { player: {
+    const playerObj = { player: {
       name,
-      assertions: assertions + assertion,
-      score: score + scoreAdd,
       gravatarEmail,
+      score: score + scoreAdd,
+      assertions: assertions + assertion,
     } };
-    localStorage.setItem('state', JSON.stringify(gameState));
+    localStorage.setItem('state', JSON.stringify(playerObj));
+    addScore({ score: score + scoreAdd, assertions: assertions + assertion });
     addStop(true);
     this.setState({ selectedAnswer: type });
   }
 
   handleNext() {
+    const { addTimer, addStop } = this.props;
+    const magicNumberThirty = 30;
+    addTimer(magicNumberThirty);
+    addStop(false);
     this.setState((actualState) => ({
       actualQuestionIndex: actualState.actualQuestionIndex + 1,
       selectedAnswer: '',
@@ -144,7 +146,7 @@ class Questions extends Component {
 
   render() {
     const { questions, actualQuestionIndex } = this.state;
-    const magicNumberFive = 5;
+    const maximumQuantity = 5;
     const aboutQuestions = () => {
       const loadingOrQuestion = (questions !== 'ERROR_QUESTIONS' && questions.length > 0)
         ? this.handleQuestion(actualQuestionIndex) : (<h1>Carregando...</h1>);
@@ -153,9 +155,9 @@ class Questions extends Component {
     return (
       <div>
         <Timer />
-        { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < magicNumberFive)
+        { (questions === 'ERROR_QUESTIONS' && actualQuestionIndex < maximumQuantity)
           ? 'ERROR' : '' }
-        { (actualQuestionIndex < magicNumberFive)
+        { (actualQuestionIndex < maximumQuantity)
           ? aboutQuestions() : <Redirect to="/feedback" /> }
       </div>
     );
@@ -165,11 +167,16 @@ class Questions extends Component {
 const mapDispatchToProps = (dispatch) => ({
   addTimer: (e) => dispatch(addTimerAction(e)),
   addStop: (e) => dispatch(addStopAction(e)),
+  addScore: (e) => dispatch(playerAddScoreAction(e)),
 });
 
 const mapStateToProps = (state) => ({
   tokenObj: state.tokenObj,
   seconds: state.timer.seconds,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  score: state.player.score,
+  assertions: state.player.assertions,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
@@ -178,6 +185,10 @@ Questions.propTypes = {
   tokenObj: PropTypes.objectOf(PropTypes.string).isRequired,
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
   seconds: PropTypes.number.isRequired,
   addStop: PropTypes.string.isRequired,
+  addScore: PropTypes.string.isRequired,
+  addTimer: PropTypes.string.isRequired,
 };
