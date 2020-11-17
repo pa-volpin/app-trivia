@@ -1,5 +1,13 @@
-import playerAction from './playerAction';
+import { playerAddScoreAction, playerLoginAction } from './playerAction';
 import fetchTokenAction from './tokenAction';
 import questionsAction from './questionsAction';
+import { addTimerAction, addStopAction } from './timerAction';
 
-export { playerAction, questionsAction, fetchTokenAction };
+export {
+  playerAddScoreAction,
+  playerLoginAction,
+  questionsAction,
+  fetchTokenAction,
+  addTimerAction,
+  addStopAction,
+};

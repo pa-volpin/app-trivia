@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { playerAction, fetchTokenAction } from '../actions';
+import { playerLoginAction, fetchTokenAction } from '../actions';
+import './Login.css';
 
 class Login extends Component {
   constructor() {
@@ -42,48 +43,52 @@ class Login extends Component {
   render() {
     const { name, gravatarEmail, isDisabled } = this.state;
     return (
-      <>
-        <input
-          type="text"
-          onChange={ this.handleChange }
-          value={ name }
-          name="name"
-          placeholder="nome"
-          data-testid="input-player-name"
-        />
-        <input
-          type="email"
-          onChange={ this.handleChange }
-          value={ gravatarEmail }
-          name="gravatarEmail"
-          placeholder="email"
-          data-testid="input-gravatar-email"
-        />
-        <Link to="/game">
-          <button
-            type="submit"
-            disabled={ isDisabled }
-            data-testid="btn-play"
-            onClick={ this.clickButton }
-          >
-            Jogar
-          </button>
-        </Link>
-        <Link to="/settings">
-          <button
-            type="button"
-            data-testid="btn-settings"
-          >
-            Configurações
-          </button>
-        </Link>
-      </>
+      <div className="container">
+        <div className="input-container">
+          <input
+            type="text"
+            onChange={ this.handleChange }
+            value={ name }
+            name="name"
+            placeholder="nome"
+            data-testid="input-player-name"
+          />
+          <input
+            type="email"
+            onChange={ this.handleChange }
+            value={ gravatarEmail }
+            name="gravatarEmail"
+            placeholder="email"
+            data-testid="input-gravatar-email"
+          />
+        </div>
+        <div className="buttons-container">
+          <Link to="/game" className="buttons">
+            <button
+              type="submit"
+              disabled={ isDisabled }
+              data-testid="btn-play"
+              onClick={ this.clickButton }
+            >
+              Jogar
+            </button>
+          </Link>
+          <Link to="/settings" className="button">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+        </div>
+      </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (e) => dispatch(playerAction(e)),
+  login: (e) => dispatch(playerLoginAction(e)),
   createToken: () => dispatch(fetchTokenAction()),
 });
 
