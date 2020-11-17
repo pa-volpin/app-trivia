@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { questionsAPI } from '../servicesAPI';
 import { addStopAction, addTimerAction, playerAddScoreAction } from '../actions';
 import Timer from './Timer';
+import './Questions.css';
 
 class Questions extends Component {
   constructor() {
@@ -62,6 +63,7 @@ class Questions extends Component {
     const actualQuestion = questions[index];
     const buttonNext = (
       <button
+        className="next-button"
         data-testid="btn-next"
         type="button"
         onClick={ this.handleNext }
@@ -69,10 +71,15 @@ class Questions extends Component {
         Próxima
       </button>);
     return (
-      <article>
-        <p data-testid="question-category">{ actualQuestion.category }</p>
-        <p data-testid="question-text">{ actualQuestion.question }</p>
-        <div>
+      <article className="question-container">
+        <h2
+          className="category"
+          data-testid="question-category"
+        >
+          { actualQuestion.category }
+        </h2>
+        <h1 data-testid="question-text">{ actualQuestion.question }</h1>
+        <div className="answers">
           { this.handleAnswers(actualQuestion) }
         </div>
         { (selectedAnswer !== '' || seconds === 0) ? buttonNext : '' }
@@ -128,7 +135,7 @@ class Questions extends Component {
       assertions: assertions + assertion,
     } };
     localStorage.setItem('state', JSON.stringify(playerObj));
-    addScore({ score: score + scoreAdd, assertions: assertions + assertion });
+    addScore({ score: scoreAdd, assertions: assertion });
     addStop(true);
     this.setState({ selectedAnswer: type });
   }
