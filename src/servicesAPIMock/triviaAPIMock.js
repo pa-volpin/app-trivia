@@ -22,12 +22,35 @@ const questionsResponse = [
     category: 'Categoria 1',
     correct_answer: 'Correct Answer',
     incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
+    difficulty: 'hard',
   },
   {
     question: 'Segunda questão',
     category: 'Categoria 2',
     correct_answer: 'Correct Answer',
     incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
+    difficulty: 'easy',
+  },
+  {
+    question: 'Terceira questão',
+    category: 'Categoria 3',
+    correct_answer: 'Correct Answer',
+    incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
+    difficulty: 'medium',
+  },
+  {
+    question: 'Quarta questão',
+    category: 'Categoria 4',
+    correct_answer: 'Correct Answer',
+    incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
+    difficulty: 'easy',
+  },
+  {
+    question: 'Quinta questão',
+    category: 'Categoria 5',
+    correct_answer: 'Correct Answer',
+    incorrect_answers: ['Incorrect 1', 'Incorrect 2', 'Incorrect 3'],
+    difficulty: 'hard',
   },
 ];
 // const questionsResponse = [];
