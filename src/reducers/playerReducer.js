@@ -11,7 +11,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   const { type, name, gravatarEmail, score, assertions } = action;
   switch (type) {
   case LOGIN:
-    return ({ ...state, name, gravatarEmail });
+    return ({ ...state, name, gravatarEmail, score: 0, assertions: 0 });
   case ADD_SCORE:
     return ({
       ...state,

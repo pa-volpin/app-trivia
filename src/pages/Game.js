@@ -9,9 +9,11 @@ class Game extends Component {
   render() {
     const { tokenObj: { token } } = this.props;
     return (
-      <div>
+      <div className="game-container">
         <Header />
-        { (token === 'ERROR_TOKEN') ? <p>Falha Temporária</p> : <Questions />}
+        <div className="game-questions-container">
+          { (token === 'ERROR_TOKEN') ? <p>Falha Temporária</p> : <Questions />}
+        </div>
       </div>
     );
   }
