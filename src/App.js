@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import { Settings, Feedback, Ranking, Game, Login } from './pages';
+import { Settings, Feedback, Ranking, Game, Login, NotFound } from './pages';
 import { recoverPlayerRankingAction, updateAuthenticationAction,
   playerLoginAction } from './actions';
 
@@ -51,6 +51,7 @@ class App extends React.Component {
         <Route path="/feedback" component={ Feedback } />
         <Route path="/ranking" component={ Ranking } />
         <Route exact path="/" component={ Login } />
+        <Route component={ NotFound } />
       </Switch>
     );
   }
