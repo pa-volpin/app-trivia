@@ -1,3 +1,75 @@
+# Bem vindo ao app [***Trivia***](https://pa-volpin.github.io/app-trivia/#/)
+
+O game Trivia, desenvolvido em React JS, é fruto de um projeto de desenvolvimento do modulo de front-end do curso da Trybe.
+
+O objetivo do projeto foi desenvolver uma aplicação web para um jogo de perguntas e respostas, onde a partir do consumo de uma API, o app oferece ao usuário uma interação onde é possível responder à questões diversas e acumular pontos para chegar ao topo do ranking de jogadores. Uma peculiaridade do projeto é o uso do Redux para controle de estado global.
+
+Acesse o app Trivia pelo link:
+
+https://pa-volpin.github.io/app-trivia/#/
+
+## Principais elementos
+
+O projeto foi composto dos seguintes elementos:
+
+- Login
+- Header
+- Perfil
+- Timer
+- Front de pergunta e respostas
+- Filtros de configuração do jogo
+- Ranking
+
+## Objetivo técnico
+
+Tecnicamente, objetivou-se a construção da aplicação web em React usando as mais modernas funcionalidades da tecnologia como:
+
+- Redux
+- React Router
+- Componentes de classe
+
+## Bibliotecas utilizadas
+
+- React
+- React Redux
+- React Router DOM
+- GitHub Pages
+- Prop Types
+- Jest
+- Cypress
+- Eslint
+
+## Metodologias utilizadas
+
+- Kanban
+- Scrum
+
+## Ferramentas de desenvolvimento
+
+- Git e GitHub para versionamento
+- Trello para gestão do projetos
+- Zoom para reuniões síncronas
+- Slack para comunicação assíncrona
+- VSCode como editor
+- GitHub Pages para deploy
+
+## Conclusão
+
+Com a participação ativa de todos os desenvolvedores, o projeto foi concluído com sucesso tendo como principais aprendizados o uso do Redux para construção de aplicações mais sólidas e eficientes, e o impacto de se ter uma comunicação clara e objetivo dentro de uma equipe de desenvolvimento. O projeto foi desenvolvido por um grupo de 3 desenvolvedores ao longo de 5 dias.
+
+## Desenvolvedores
+
+- Havyner Caetano ([perfil](https://github.com/HCaetano))
+- Paulo Afonso Volpin ([perfil](https://github.com/pa-volpin))
+- Renato Costa ([perfil](https://github.com/RenatoCostaDev))
+
+## Repositório base do projeto (Trybe)
+
+https://github.com/tryber/sd-06-project-trivia-react-redux
+
+<details>
+<summary>README OFICIAL DA TRYBE</summary></br>
+
 Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe.
 
 # Boas vindas ao repositório do projeto de Trivia!
@@ -709,3 +781,4 @@ Link: [FORMULÁRIO DE AVALIAÇÃO DE PROJETO](https://be-trybe.typeform.com/to/Z
 O avaliador automático não necessariamente avalia seu projeto na ordem em que os requisitos aparecem no readme. Isso acontece para deixar o processo de avaliação mais rápido. Então, não se assuste se isso acontecer, ok?
 
 ---
+</details>
