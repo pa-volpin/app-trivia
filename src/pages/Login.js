@@ -76,6 +76,7 @@ class Login extends Component {
     if (emailValidation !== '') {
       validationClass = emailValidation ? 'valid' : 'invalid';
     }
+    const visibility = authenticationStatus ? 'invisible' : '';
 
     return (
       <div className="main-container">
@@ -95,8 +96,7 @@ class Login extends Component {
           <fieldset className="inputs-container">
             <label
               htmlFor="name-input"
-              className="input-label-container"
-              hidden={ authenticationStatus }
+              className={ `input-label-container ${visibility}` }
             >
               Name
               <div className="input-box">
@@ -114,8 +114,7 @@ class Login extends Component {
             </label>
             <label
               htmlFor="email-input"
-              className="input-label-container"
-              hidden={ authenticationStatus }
+              className={ `input-label-container ${visibility}` }
             >
               Email
               <div className={ `input-box ${validationClass}` }>
@@ -159,6 +158,7 @@ class Login extends Component {
                     className="change-account-button"
                     type="button"
                     onClick={ this.logout }
+                    data-testid="btn-change-account"
                   >
                     Change account
                   </button>

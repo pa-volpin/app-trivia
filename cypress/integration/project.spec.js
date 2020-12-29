@@ -11,7 +11,7 @@ const WRONG_ALTERNATIVES_SELECTOR = '[data-testid*="wrong-answer"]';
 const LOCAL_STORAGE_STATE_KEY = 'state';
 const BUTTON_NEXT_QUESTION_SELECTOR = '[data-testid="btn-next"]';
 const FEEDBACK_TEXT_SELECTOR = '[data-testid="feedback-text"]';
-
+const BUTTON_CHANGE_ACCOUNT_SELECTOR = '[data-testid="btn-change-account"]';
 const BUTTON_SETTINGS_SELECTOR = '[data-testid="btn-settings"]';
 const SETTINGS_TITLE_SELECTOR = '[data-testid="settings-title"]';
 const TOKEN_KEY = 'token';
@@ -570,6 +570,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
 
   it('Devem existir duas pessoas no _ranking_', () => {
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
+    cy.get(BUTTON_CHANGE_ACCOUNT_SELECTOR).click();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).clear();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).clear();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type(name2);
@@ -594,6 +595,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
 
   it('O _ranking_ deve ser ordenado pela pontuação', () => {
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
+    cy.get(BUTTON_CHANGE_ACCOUNT_SELECTOR).click();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).clear();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).clear();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type(name2);
@@ -612,6 +614,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
 
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
+    cy.get(BUTTON_CHANGE_ACCOUNT_SELECTOR).click();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).clear();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).clear();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type(name3);

@@ -114,7 +114,7 @@ class Settings extends Component {
               >
                 { category === '' && <option>Select an option</option> }
                 <option value="any">Any Category</option>
-                { categories.length > 0 && categories.map((cat) => (
+                { categories !== [] && categories.map((cat) => (
                   <option key={ cat.id } value={ cat.id }>{ cat.name }</option>)) }
               </select>
             </label>

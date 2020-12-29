@@ -22,6 +22,11 @@
   color: rgb(202, 19, 19);
 }
 
+.input-label-container.invisible {
+  visibility: hidden;
+  height: 0;
+}
+
 .header-area .settings-button:hover {
   animation-name: spin;
   animation-duration: 5000ms;
