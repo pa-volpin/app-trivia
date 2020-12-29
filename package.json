@@ -2,6 +2,7 @@
   "name": "trivia-test",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://pa-volpin.github.io/app-trivia/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/user-event": "^7.1.2",

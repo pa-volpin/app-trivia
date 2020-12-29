@@ -34,7 +34,7 @@ class Settings extends Component {
 
   handleState() {
     const { isFetching } = this.state;
-    if (!isFetching) {
+    if (isFetching) {
       getCategoriesAPI()
         .then((r) => this.setState({ categories: r, isFetching: false }));
     }
