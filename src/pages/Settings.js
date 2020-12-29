@@ -18,7 +18,7 @@ class Settings extends Component {
       amount,
       type,
       categories: [],
-      isFetching: true,
+      isFetching: '',
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleState = this.handleState.bind(this);
@@ -34,6 +34,7 @@ class Settings extends Component {
 
   handleState() {
     const { isFetching } = this.state;
+    this.setState({ isFetching: true });
     if (isFetching) {
       getCategoriesAPI()
         .then((r) => this.setState({ categories: r, isFetching: false }));
@@ -114,7 +115,7 @@ class Settings extends Component {
               >
                 { category === '' && <option>Select an option</option> }
                 <option value="any">Any Category</option>
-                { categories !== [] && categories.map((cat) => (
+                { (categories !== [] || categories.length > 0) && categories.map((cat) => (
                   <option key={ cat.id } value={ cat.id }>{ cat.name }</option>)) }
               </select>
             </label>
